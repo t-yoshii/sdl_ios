@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="l5Q-ZP-1BO">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="l5Q-ZP-1BO">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -69,10 +69,41 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
+                            <tableViewSection headerTitle="App Type" id="5mR-Fa-Z7Q">
+                                <cells>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="WCP-ss-uCS">
+                                        <rect key="frame" x="0.0" y="192" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="WCP-ss-uCS" id="dsE-lA-SZ5">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="On for Media, Off for Non-Media" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="cBG-9s-A5D">
+                                                    <rect key="frame" x="8" y="0.0" width="359" height="44"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="44" id="HN5-gh-oKg"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="decimalPad"/>
+                                                </textField>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UJ3-Ca-2Ad">
+                                                    <rect key="frame" x="293" y="6" width="51" height="31"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                </switch>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="cBG-9s-A5D" firstAttribute="trailing" secondItem="dsE-lA-SZ5" secondAttribute="trailingMargin" id="etO-Y9-cQ8"/>
+                                                <constraint firstAttribute="centerY" secondItem="cBG-9s-A5D" secondAttribute="centerY" id="uHY-FX-hu5"/>
+                                                <constraint firstItem="cBG-9s-A5D" firstAttribute="leading" secondItem="dsE-lA-SZ5" secondAttribute="leadingMargin" id="ybH-xo-g0Q"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
                             <tableViewSection headerTitle="" id="rgl-Lm-uDH">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="ybX-Eh-Hbx">
-                                        <rect key="frame" x="0.0" y="164" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="256" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ybX-Eh-Hbx" id="uI9-fK-205">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
@@ -123,6 +154,7 @@
                         <outlet property="connectButton" destination="t37-4W-6F4" id="f6v-Q4-ggs"/>
                         <outlet property="connectTableViewCell" destination="ybX-Eh-Hbx" id="hyh-CW-oXx"/>
                         <outlet property="ipAddressTextField" destination="xqM-s4-9RV" id="daz-uN-Rxa"/>
+                        <outlet property="mediaSwitch" destination="UJ3-Ca-2Ad" id="uqq-jG-eNz"/>
                         <outlet property="portTextField" destination="hsI-ld-8xY" id="5pF-XP-Xh3"/>
                     </connections>
                 </tableViewController>

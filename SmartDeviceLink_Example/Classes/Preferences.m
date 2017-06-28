@@ -7,10 +7,11 @@
 
 NSString *const IPAddressPreferencesKey = @"SDLExampleAppIPAddress";
 NSString *const PortPreferencesKey = @"SDLExampleAppPort";
+NSString *const AppTypeKey = @"SDLExampleAppType";
 
 NSString *const DefaultIPAddressValue = @"192.168.1.1";
 UInt16 const DefaultPortValue = 12345;
-
+BOOL const DefaultAppType = 0;
 
 
 @interface Preferences ()
@@ -53,6 +54,7 @@ UInt16 const DefaultPortValue = 12345;
 - (void)resetPreferences {
     self.ipAddress = DefaultIPAddressValue;
     self.port = DefaultPortValue;
+    self.appType = DefaultAppType;
 }
 
 
@@ -74,6 +76,13 @@ UInt16 const DefaultPortValue = 12345;
     [self setInteger:port forKey:PortPreferencesKey];
 }
 
+- (BOOL)appType {
+    return (Boolean)[self integerForKey:AppTypeKey];
+}
+
+- (void)setAppType:(BOOL)appType {
+    [self setBoolean:appType forKey:AppTypeKey];
+}
 
 #pragma mark - Private User Defaults Helpers
 
@@ -112,6 +121,25 @@ UInt16 const DefaultPortValue = 12345;
         retVal = [[NSUserDefaults standardUserDefaults] integerForKey:aKey];
     });
     
+    return retVal;
+}
+
+- (void)setBoolean:(BOOL)aBool forKey:(NSString *)aKey {
+    NSParameterAssert(aKey != nil);
+
+    dispatch_async(self.class.preferencesQueue, ^{
+        [[NSUserDefaults standardUserDefaults] setBool:aBool forKey:aKey];
+    });
+}
+
+- (BOOL)boolForKey:(NSString *)aKey {
+    NSParameterAssert(aKey != nil);
+
+    __block BOOL retVal = nil;
+    dispatch_sync(self.class.preferencesQueue, ^{
+        retVal = [[NSUserDefaults standardUserDefaults] boolForKey:aKey];
+    });
+
     return retVal;
 }
 

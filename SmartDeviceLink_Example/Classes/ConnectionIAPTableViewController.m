@@ -3,6 +3,7 @@
 //  SmartDeviceLink-iOS
 
 #import "ConnectionIAPTableViewController.h"
+#import "Preferences.h"
 
 #import "ProxyManager.h"
 
@@ -12,6 +13,7 @@
 
 @property (weak, nonatomic) IBOutlet UITableViewCell *connectTableViewCell;
 @property (weak, nonatomic) IBOutlet UIButton *connectButton;
+@property (weak, nonatomic) IBOutlet UISwitch *mediaSwitch;
 
 @end
 
@@ -30,6 +32,9 @@
     
     // Connect Button setup
     self.connectButton.tintColor = [UIColor whiteColor];
+
+    // Set switch
+    [self.mediaSwitch setOn:[Preferences sharedPreferences].appType animated:YES];
 }
 
 - (void)dealloc {
@@ -42,6 +47,13 @@
 #pragma mark - IBActions
 
 - (IBAction)connectButtonWasPressed:(UIButton *)sender {
+
+    if ([self.mediaSwitch isOn]) {
+        [Preferences sharedPreferences].appType = 1;
+    } else {
+        [Preferences sharedPreferences].appType = 0;
+    }
+
     ProxyState state = [ProxyManager sharedManager].state;
     switch (state) {
         case ProxyStateStopped: {

@@ -16,6 +16,8 @@
 // Connection
 @property (strong, nonatomic) NSString *ipAddress;
 @property (assign, nonatomic) UInt16 port;
+@property (assign, nonatomic) BOOL appType;
+
 
 + (instancetype)sharedPreferences;
 

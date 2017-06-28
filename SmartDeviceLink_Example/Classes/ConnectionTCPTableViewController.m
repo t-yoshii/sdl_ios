@@ -16,6 +16,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *ipAddressTextField;
 @property (weak, nonatomic) IBOutlet UITextField *portTextField;
 
+@property (weak, nonatomic) IBOutlet UISwitch *mediaSwitch;
+
 @property (weak, nonatomic) IBOutlet UITableViewCell *connectTableViewCell;
 @property (weak, nonatomic) IBOutlet UIButton *connectButton;
 
@@ -38,6 +40,9 @@
     
     // Connect Button setup
     self.connectButton.tintColor = [UIColor whiteColor];
+
+    // Set switch
+    [self.mediaSwitch setOn:[Preferences sharedPreferences].appType animated:YES];
 }
 
 - (void)dealloc {
@@ -56,7 +61,13 @@
 - (IBAction)connectButtonWasPressed:(UIButton *)sender {
     [Preferences sharedPreferences].ipAddress = self.ipAddressTextField.text;
     [Preferences sharedPreferences].port = self.portTextField.text.integerValue;
-    
+
+    if ([self.mediaSwitch isOn]) {
+        [Preferences sharedPreferences].appType = 1;
+    } else {
+        [Preferences sharedPreferences].appType = 0;
+    }
+
     ProxyState state = [ProxyManager sharedManager].state;
     switch (state) {
         case ProxyStateStopped: {

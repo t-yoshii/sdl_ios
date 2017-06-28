@@ -1,3 +1,4 @@
+
 //
 //  ProxyManager.h
 //  SmartDeviceLink-iOS
@@ -6,7 +7,6 @@
 
 @class SDLManager;
 @class SDLStreamingMediaManager;
-
 
 typedef NS_ENUM(NSUInteger, ProxyTransportType) {
     ProxyTransportTypeUnknown,
@@ -20,11 +20,26 @@ typedef NS_ENUM(NSUInteger, ProxyState) {
     ProxyStateConnected
 };
 
+typedef NS_ENUM(NSUInteger, SDLHMIFirstState) {
+    SDLHMIFirstStateNone,
+    SDLHMIFirstStateNonNone,
+    SDLHMIFirstStateFull
+};
+
+typedef NS_ENUM(NSUInteger, SDLHMIInitialShowState) {
+    SDLHMIInitialShowStateNone,
+    SDLHMIInitialShowStateDataAvailable,
+    SDLHMIInitialShowStateShown
+};
 
 @interface ProxyManager : NSObject
 
 @property (assign, nonatomic, readonly) ProxyState state;
 @property (strong, nonatomic) SDLManager *sdlManager;
+@property (assign, nonatomic) SDLHMIFirstState firstTimeState;
+@property (assign, nonatomic) SDLHMIInitialShowState initialShowState;
+@property (nonatomic, assign, getter=isVehicleDataSubscribed) BOOL vehicleDataSubscribed;
+@property (assign, nonatomic) BOOL ShouldRestartOnDisconnect;
 
 + (instancetype)sharedManager;
 - (void)startIAP;
