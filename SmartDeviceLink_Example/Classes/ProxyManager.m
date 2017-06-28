@@ -58,6 +58,12 @@ NS_ASSUME_NONNULL_BEGIN
 
     // Assume this is production and disable logging
     lifecycleConfig.logFlags = SDLLogOutputFile;
+    BOOL type = [Preferences sharedPreferences].appType;
+    if (type){
+        lifecycleConfig.appType = SDLAppHMIType.MEDIA;
+    }else{
+        lifecycleConfig.appType = SDLAppHMIType.DEFAULT;
+    }
 
     SDLConfiguration *config = [SDLConfiguration configurationWithLifecycle:lifecycleConfig lockScreen:[SDLLockScreenConfiguration enabledConfiguration]];
     self.sdlManager = [[SDLManager alloc] initWithConfiguration:config delegate:self];
@@ -71,6 +77,13 @@ NS_ASSUME_NONNULL_BEGIN
     if (self.sdlManager) { return; }
     SDLLifecycleConfiguration *lifecycleConfig = [self.class setLifecycleConfigurationPropertiesOnConfiguration:[SDLLifecycleConfiguration debugConfigurationWithAppName:SDLAppName appId:SDLAppId ipAddress:[Preferences sharedPreferences].ipAddress port:[Preferences sharedPreferences].port]];
     SDLConfiguration *config = [SDLConfiguration configurationWithLifecycle:lifecycleConfig lockScreen:[SDLLockScreenConfiguration enabledConfiguration]];
+
+    BOOL type = [Preferences sharedPreferences].appType;
+    if (type){
+        lifecycleConfig.appType = SDLAppHMIType.MEDIA;
+    }else{
+        lifecycleConfig.appType = SDLAppHMIType.DEFAULT;
+    }
     self.sdlManager = [[SDLManager alloc] initWithConfiguration:config delegate:self];
 
     [self startManager];
@@ -108,8 +121,9 @@ NS_ASSUME_NONNULL_BEGIN
 
     self.initialShowState = SDLHMIInitialShowStateShown;
 
-    SDLShow* show = [[SDLShow alloc] initWithMainField1:@"SDL" mainField2:@"Test App" alignment:[SDLTextAlignment CENTERED]];
+    SDLShow* show = [[SDLShow alloc] initWithMainField1:@"SDL" mainField2:@"Test App" alignment:[SDLTextAlignment LEFT_ALIGNED]];
     SDLSoftButton *pointingSoftButton = [self.class pointingSoftButtonWithManager:self.sdlManager];
+
     show.softButtons = [@[pointingSoftButton] mutableCopy];
     show.graphic = [self.class mainGraphicImage];
 
