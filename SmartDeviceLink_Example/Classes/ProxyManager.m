@@ -251,6 +251,44 @@ NS_ASSUME_NONNULL_BEGIN
     return performInteractionCommand;
 }
 
+- (void)createMenuWithSubmenu {
+
+    SDLAddSubMenu* subMenu = [[SDLAddSubMenu alloc] initWithId:2 menuName:@"Example Submenu"];
+
+    [self.sdlManager sendRequest:subMenu withResponseHandler:^(SDLRPCRequest *request, SDLRPCResponse *response, NSError *error) {
+        if ([response.resultCode isEqualToEnum:SDLResult.SUCCESS]) {
+            // The submenu was created successfully, start adding the menu items
+            [self createSubmenu];
+        }
+    }];
+}
+
+- (void) createSubmenu {
+    SDLMenuParams* menuParameters = [[SDLMenuParams alloc] initWithMenuName:@"Example Item" parentId:2 position:0];
+
+    // For menu items, be sure to use unique ids.
+    SDLAddCommand* menuItem = [[SDLAddCommand alloc] initWithId:2 vrCommands:@[@"Example Item"] handler:^(SDLRPCNotification *notification) {
+        if (![notification isKindOfClass:SDLOnCommand.class]) {
+            return;
+        }
+
+        SDLOnCommand* onCommand = (SDLOnCommand*)notification;
+
+        if ([onCommand.triggerSource isEqualToEnum:SDLTriggerSource.MENU]) {
+            // Menu Item Was Selected
+        }
+    }];
+
+    // Set the menu parameters
+    menuItem.menuParams = menuParameters;
+
+    [self.sdlManager sendRequest:menuItem withResponseHandler:^(SDLRPCRequest *request, SDLRPCResponse *response, NSError *error) {
+        if ([response.resultCode isEqualToEnum:SDLResult.SUCCESS]) {
+            // The menuItem was created successfully now add a submenu
+        }
+    }];
+}
+
 + (SDLSpeak *)appNameSpeak {
     SDLSpeak *speak = [[SDLSpeak alloc] init];
     speak.ttsChunks = [SDLTTSChunk textChunksFromString:@"S D L Example App"];
@@ -382,6 +420,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)prepareRemoteSystem {
     [self.sdlManager sendRequest:[self.class speakNameCommandWithManager:self.sdlManager]];
     [self.sdlManager sendRequest:[self.class interactionSetCommandWithManager:self.sdlManager]];
+    [self createMenuWithSubmenu];
     [self sdl_subscribeVehicleData];
 
     dispatch_group_t dataDispatchGroup = dispatch_group_create();
