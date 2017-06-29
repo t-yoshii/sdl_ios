@@ -304,6 +304,7 @@ NS_ASSUME_NONNULL_BEGIN
 
         if ([onCommand.triggerSource isEqualToEnum:SDLTriggerSource.MENU]) {
             // Menu Item Was Selected
+            [self createSlider];
         }
     }];
 
@@ -350,6 +351,15 @@ NS_ASSUME_NONNULL_BEGIN
     message.scrollableMessageBody = @"Sit in window and stare oooh, a bird, yum russian blue make muffins hiss and stare at nothing then run suddenly away love to play with owner's hair tie. Meow cat is love, cat is life attack dog, run away and pretend to be victim. Chew foot. Peer out window, chatter at birds, lure them to mouth always hungry.";
     message.timeout = @10000;
     [self.sdlManager sendRequest:message];
+}
+
+- (void) createSlider {
+    SDLSlider* slider = [[SDLSlider alloc] init];
+    slider.timeout = @10000;
+    slider.position = @1;
+    slider.numTicks = @8;
+    slider.sliderHeader = @"Slider Header";
+    [self.sdlManager sendRequest:slider];
 }
 
 + (SDLSpeak *)appNameSpeak {
