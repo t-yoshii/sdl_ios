@@ -251,19 +251,73 @@ NS_ASSUME_NONNULL_BEGIN
     return performInteractionCommand;
 }
 
-- (void)createMenuWithSubmenu {
+- (void)createMenuItemWithSubmenu {
 
     SDLAddSubMenu* subMenu = [[SDLAddSubMenu alloc] initWithId:2 menuName:@"Example Submenu"];
 
     [self.sdlManager sendRequest:subMenu withResponseHandler:^(SDLRPCRequest *request, SDLRPCResponse *response, NSError *error) {
         if ([response.resultCode isEqualToEnum:SDLResult.SUCCESS]) {
             // The submenu was created successfully, start adding the menu items
-            [self createSubmenu];
+            [self createSubmenuItem];
         }
     }];
 }
 
-- (void) createSubmenu {
+- (void)createMenuItemScrollableMessage {
+
+    SDLMenuParams* menuParameters = [[SDLMenuParams alloc] initWithMenuName:@"Show Scrollable Message" parentId:0 position:0];
+
+    // For menu items, be sure to use unique ids.
+    SDLAddCommand* menuItem = [[SDLAddCommand alloc] initWithId:3 vrCommands:@[@"Show Scrollable Message"] handler:^(SDLRPCNotification *notification) {
+        if (![notification isKindOfClass:SDLOnCommand.class]) {
+            return;
+        }
+
+        SDLOnCommand* onCommand = (SDLOnCommand*)notification;
+
+        if ([onCommand.triggerSource isEqualToEnum:SDLTriggerSource.MENU]) {
+            [self createScrollableMessage];
+        }
+    }];
+
+    // Set the menu parameters
+    menuItem.menuParams = menuParameters;
+
+    [self.sdlManager sendRequest:menuItem withResponseHandler:^(SDLRPCRequest *request, SDLRPCResponse *response, NSError *error) {
+        if ([response.resultCode isEqualToEnum:SDLResult.SUCCESS]) {
+            // The menuItem was created successfully now add a submenu
+        }
+    }];
+}
+
+- (void)createMenuItemSliders {
+
+    SDLMenuParams* menuParameters = [[SDLMenuParams alloc] initWithMenuName:@"Show Slider" parentId:0 position:0];
+
+    // For menu items, be sure to use unique ids.
+    SDLAddCommand* menuItem = [[SDLAddCommand alloc] initWithId:4 vrCommands:@[@"Show Slider"] handler:^(SDLRPCNotification *notification) {
+        if (![notification isKindOfClass:SDLOnCommand.class]) {
+            return;
+        }
+
+        SDLOnCommand* onCommand = (SDLOnCommand*)notification;
+
+        if ([onCommand.triggerSource isEqualToEnum:SDLTriggerSource.MENU]) {
+            // Menu Item Was Selected
+        }
+    }];
+
+    // Set the menu parameters
+    menuItem.menuParams = menuParameters;
+
+    [self.sdlManager sendRequest:menuItem withResponseHandler:^(SDLRPCRequest *request, SDLRPCResponse *response, NSError *error) {
+        if ([response.resultCode isEqualToEnum:SDLResult.SUCCESS]) {
+            // The menuItem was created successfully now add a submenu
+        }
+    }];
+}
+
+- (void) createSubmenuItem {
     SDLMenuParams* menuParameters = [[SDLMenuParams alloc] initWithMenuName:@"Example Item" parentId:2 position:0];
 
     // For menu items, be sure to use unique ids.
@@ -287,6 +341,15 @@ NS_ASSUME_NONNULL_BEGIN
             // The menuItem was created successfully now add a submenu
         }
     }];
+}
+
+- (void) createScrollableMessage {
+    // Menu Item Was Selected
+    SDLScrollableMessage* message = [[SDLScrollableMessage alloc] init];
+    // message from cat ipsum
+    message.scrollableMessageBody = @"Sit in window and stare oooh, a bird, yum russian blue make muffins hiss and stare at nothing then run suddenly away love to play with owner's hair tie. Meow cat is love, cat is life attack dog, run away and pretend to be victim. Chew foot. Peer out window, chatter at birds, lure them to mouth always hungry.";
+    message.timeout = @10000;
+    [self.sdlManager sendRequest:message];
 }
 
 + (SDLSpeak *)appNameSpeak {
@@ -420,7 +483,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)prepareRemoteSystem {
     [self.sdlManager sendRequest:[self.class speakNameCommandWithManager:self.sdlManager]];
     [self.sdlManager sendRequest:[self.class interactionSetCommandWithManager:self.sdlManager]];
-    [self createMenuWithSubmenu];
+    [self createMenuItemWithSubmenu];
+    [self createMenuItemScrollableMessage];
+    [self createMenuItemSliders];
     [self sdl_subscribeVehicleData];
 
     dispatch_group_t dataDispatchGroup = dispatch_group_create();
